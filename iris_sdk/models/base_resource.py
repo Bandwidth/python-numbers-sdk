@@ -241,7 +241,7 @@ class BaseResource(BaseData):
 
         # The provided element is actually the one we're searching for
         if element.tag == search_name:
-            element_children = element.getchildren()
+            element_children = list(element)
         else:
             element_children = element.findall(search_name)
 
@@ -257,7 +257,7 @@ class BaseResource(BaseData):
             else:
                 property = getattr(inst, tag)
 
-            if len(el.getchildren()) == 0:
+            if len(list(el)) == 0:
                 if el.text is not None:
                     # Simple list - multiple "<tag></tag>" lines
                     if isinstance(property, BaseResourceSimpleList):
@@ -455,7 +455,7 @@ class BaseResource(BaseData):
 
             if isinstance(property, BaseMap):
                 self._to_xml(el, property)
-                if (len(el.getchildren()) == 0) and (el.text is None):
+                if (len(list(el)) == 0) and (el.text is None):
                     elem.remove(el)
             else:
                 el.text = str(property)

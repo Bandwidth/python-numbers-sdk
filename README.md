@@ -1,4 +1,4 @@
-# Python client library for IRIS / BBS API
+# Python Numbers SDK
 
 ## Needed tools
 
