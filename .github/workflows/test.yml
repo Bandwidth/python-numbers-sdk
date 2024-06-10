@@ -19,13 +19,6 @@ concurrency:
     group: ${{ github.workflow }}-${{ github.head_ref }}
     cancel-in-progress: true
 
-env:
-    BW_ACCOUNT_ID: ${{ secrets.BW_ACCOUNT_ID }}
-    BW_USERNAME: ${{ secrets.BW_USERNAME }}
-    BW_PASSWORD: ${{ secrets.BW_PASSWORD }}
-    BW_USERNAME_FORBIDDEN: ${{ secrets.BW_USERNAME_FORBIDDEN }}
-    BW_PASSWORD_FORBIDDEN: ${{ secrets.BW_PASSWORD_FORBIDDEN }}
-
 jobs:
     test:
         name: Test
