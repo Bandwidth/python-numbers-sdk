@@ -1,6 +1,6 @@
 import sys
 
-from iris_sdk import Client, CoveredRateCenters, RestError
+from bandwidth_numbers import Client, CoveredRateCenters, RestError
 
 if len(sys.argv) < 2:
     sys.exit("usage: python covered_rate.py [zip], e.g.:" +

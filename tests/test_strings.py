@@ -9,7 +9,7 @@ if __package__ is None:
 
 from unittest import main, TestCase
 
-from iris_sdk.utils.strings import Converter
+from bandwidth_numbers.utils.strings import Converter
 
 class ClassStringsConverterTest(TestCase):
 

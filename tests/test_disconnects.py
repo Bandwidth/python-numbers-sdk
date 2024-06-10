@@ -12,8 +12,8 @@ from unittest import main, TestCase
 import requests
 import requests_mock
 
-from iris_sdk.client import Client
-from iris_sdk.models.account import Account
+from bandwidth_numbers.client import Client
+from bandwidth_numbers.models.account import Account
 
 XML_RESPONSE_DISCONNECT_GET = (
     b"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"

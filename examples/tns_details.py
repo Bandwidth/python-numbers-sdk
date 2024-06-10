@@ -1,6 +1,6 @@
 import sys
 
-from iris_sdk import Client, Tns, RestError
+from bandwidth_numbers import Client, Tns, RestError
 
 if len(sys.argv) < 2:
     sys.exit("usage: python tns_details.py [number], e.g.:" +

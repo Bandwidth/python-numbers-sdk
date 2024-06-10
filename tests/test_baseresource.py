@@ -10,7 +10,7 @@ import sys
 if __package__ is None:
     sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
-from iris_sdk.utils.py_compat import PY_VER_MAJOR
+from bandwidth_numbers.utils.py_compat import PY_VER_MAJOR
 
 from unittest import main, TestCase
 
@@ -21,8 +21,8 @@ else:
 
 from xml.etree.ElementTree import Element, ElementTree, fromstring
 
-from iris_sdk.models.base_resource import BaseResource
-from iris_sdk.models.maps.base_map import BaseMap
+from bandwidth_numbers.models.base_resource import BaseResource
+from bandwidth_numbers.models.maps.base_map import BaseMap
 
 class FooMap(BaseMap):
     fred = "A"
@@ -48,7 +48,7 @@ class ClassBaseResourceInitTest(TestCase):
     """Test class initialization and properties"""
 
     def setUp(self):
-        _patcher = patch("iris_sdk.utils.strings.Converter.__init__",
+        _patcher = patch("bandwidth_numbers.utils.strings.Converter.__init__",
             return_value=None)
         self._converter = _patcher.start()
         self.addCleanup(patch.stopall)

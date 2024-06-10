@@ -1,7 +1,7 @@
 import sys
 import time
-from iris_sdk import Account, Client
-from iris_sdk.models.data.ord.existing_search_order import ExistingSearchOrder
+from bandwidth_numbers import Account, Client
+from bandwidth_numbers.models.data.ord.existing_search_order import ExistingSearchOrder
 
 
 def search_and_order(account, site_id):

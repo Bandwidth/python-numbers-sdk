@@ -9,7 +9,7 @@ if __package__ is None:
 
 from unittest import main, TestCase
 
-from iris_sdk.models.base_resource import BaseData
+from bandwidth_numbers.models.base_resource import BaseData
 
 class BaseDataStub(BaseData):
     foo = 1

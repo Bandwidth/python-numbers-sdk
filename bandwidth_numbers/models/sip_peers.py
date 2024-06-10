@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+
+from __future__ import division, absolute_import, print_function
+from future.builtins import super
+
+from bandwidth_numbers.models.base_resource import BaseResource, BaseResourceList
+from bandwidth_numbers.models.data.sip_peers import SipPeersData
+from bandwidth_numbers.models.sip_peer import SipPeer
+
+XPATH_SIP_PEERS = "/sippeers"
+
+class SipPeers(BaseResource, SipPeersData):
+
+    """Site's SIP peers"""
+
+    _xpath = XPATH_SIP_PEERS
+
+    def __init__(self, parent=None, client=None):
+        super().__init__(parent, client)
+        SipPeersData.__init__(self, self)
+
+    def create(self, data=None, save=True):
+        sip_peer = SipPeer(self).set_from_dict(data)
+        if save and (data is not None):
+            sip_peer.save()
+        return sip_peer
+
+    def get(self, id):
+        return SipPeer(self).get(id)
+
+    def list(self):
+        return self._get_data().sip_peer
