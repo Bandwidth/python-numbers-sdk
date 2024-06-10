@@ -31,10 +31,8 @@ pytest
 ## Usage
 
 ```python
-from bandwidth-numbers import Account, Client
-```
+from bandwidth_numbers import Account, Client
 
-```python
 client = Client(url="https://dashboard.bandwidth.com/api", account_id=123456, username="foo",
     password="bar")
 ```
