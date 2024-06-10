@@ -2,7 +2,7 @@
 
 ## Needed tools
 
-    - Python 3.5
+    - Python >=3.7
     - pip
 
 ## Requires
@@ -11,8 +11,8 @@
     - requests
 
 ## Install
-```console
-pip install -e git+https://github.com/bandwidthcom/python-bandwidth-iris#egg=iris_sdk
+```sh
+pip install bandwidth-numbers-sdk
 ```
 
 ## Testing
@@ -20,18 +20,18 @@ pip install -e git+https://github.com/bandwidthcom/python-bandwidth-iris#egg=iri
 Tests require the *mock* and *requests_mock* packages. You can install them
 with
 
-```console
-pip install -r requirements.txt
+```sh
+pip install -r test-requirements.txt
 ```
 The tests can be run by issuing
-```console
-python -m unittest discover
+```sh
+pytest
 ```
 
 ## Usage
 
 ```python
-from iris_sdk import Account, Client
+from bandwidth-numbers import Account, Client
 ```
 
 ```python
