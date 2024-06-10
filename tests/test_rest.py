@@ -7,7 +7,7 @@ import sys
 if __package__ is None:
     sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
-from iris_sdk.utils.py_compat import PY_VER_MAJOR
+from bandwidth_numbers.utils.py_compat import PY_VER_MAJOR
 
 from unittest import main, TestCase
 
@@ -18,7 +18,7 @@ else:
 
 from requests.exceptions import HTTPError
 
-from iris_sdk.utils.rest import ERROR_TAG, ERROR_TEMPLATE, HEADERS, HTTP_OK,\
+from bandwidth_numbers.utils.rest import ERROR_TAG, ERROR_TEMPLATE, HEADERS, HTTP_OK,\
     RestClient, RestError
 
 class HttpErrorStub(HTTPError):

@@ -12,9 +12,9 @@ from unittest import main, TestCase
 import requests
 import requests_mock
 
-from iris_sdk.client import Client
-from iris_sdk.models.account import Account
-from iris_sdk.models.users import Users
+from bandwidth_numbers.client import Client
+from bandwidth_numbers.models.account import Account
+from bandwidth_numbers.models.users import Users
 
 XML_RESPONSE_USERS_LIST = (
     b"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"

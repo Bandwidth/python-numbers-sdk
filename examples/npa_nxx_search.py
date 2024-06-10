@@ -1,6 +1,6 @@
 import sys
 
-from iris_sdk import Account, Client, RestError
+from bandwidth_numbers import Account, Client, RestError
 
 if len(sys.argv) < 3:
     sys.exit("usage: python npa_nxx_search.py [area code] [quantity], e.g.:" +

@@ -1,6 +1,6 @@
 import sys
 
-from iris_sdk import Client, RateCenters, RestError
+from bandwidth_numbers import Client, RateCenters, RestError
 
 if len(sys.argv) < 2:
     sys.exit("usage: python rate_center.py [state], e.g.:\n" +

@@ -7,7 +7,7 @@ import sys
 if __package__ is None:
     sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
-from iris_sdk.utils.py_compat import PY_VER_MAJOR
+from bandwidth_numbers.utils.py_compat import PY_VER_MAJOR
 
 from unittest import main, TestCase
 
@@ -16,7 +16,7 @@ if PY_VER_MAJOR == 3:
 else:
     from mock import patch, MagicMock, PropertyMock
 
-from iris_sdk.client import Client
+from bandwidth_numbers.client import Client
 
 class ClassClientInitTest(TestCase):
 
@@ -24,7 +24,7 @@ class ClassClientInitTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        with patch("iris_sdk.utils.config.Config"):
+        with patch("bandwidth_numbers.utils.config.Config"):
             cls._client = Client()
 
     @classmethod
@@ -45,8 +45,8 @@ class ClassClientConfigTest(TestCase):
     def tearDown(self):
         del self._client
 
-    @patch("iris_sdk.utils.rest.RestClient.__init__", return_value = None)
-    @patch("iris_sdk.utils.config.Config.__init__", return_value = None)
+    @patch("bandwidth_numbers.utils.rest.RestClient.__init__", return_value = None)
+    @patch("bandwidth_numbers.utils.config.Config.__init__", return_value = None)
     def test_client_init(self, mock1, mock2):
         self._client = Client("foo", "bar", "baz", "qux", "quux")
         mock1.assert_called_once_with("foo", "bar", "baz", "qux", "quux")
@@ -58,8 +58,8 @@ class ClassClientStrings(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        with patch("iris_sdk.utils.config.Config"):
-            with patch("iris_sdk.utils.rest.RestClient"):
+        with patch("bandwidth_numbers.utils.config.Config"):
+            with patch("bandwidth_numbers.utils.rest.RestClient"):
                 cls._client = Client("foo///")
 
     @classmethod
@@ -80,12 +80,12 @@ class ClassClientRequests(TestCase):
 
     def setUp(self):
 
-        patcher_req = patch("iris_sdk.utils.rest.RestClient.request")
-        patcher_url = patch("iris_sdk.utils.config.Config.url",
+        patcher_req = patch("bandwidth_numbers.utils.rest.RestClient.request")
+        patcher_url = patch("bandwidth_numbers.utils.config.Config.url",
             new_callable = PropertyMock, return_value = "foo")
-        patcher_pass = patch("iris_sdk.utils.config.Config.password",
+        patcher_pass = patch("bandwidth_numbers.utils.config.Config.password",
             new_callable = PropertyMock, return_value = "bar")
-        patcher_user = patch("iris_sdk.utils.config.Config.username",
+        patcher_user = patch("bandwidth_numbers.utils.config.Config.username",
             new_callable = PropertyMock, return_value = "baz")
 
         self._url = patcher_url.start()
@@ -105,8 +105,8 @@ class ClassClientRequests(TestCase):
         cls._mock_res.content = b"foobar"
         cls._mock_res.status_code = 1337
 
-        with patch("iris_sdk.utils.config.Config"):
-            with patch("iris_sdk.utils.rest.RestClient"):
+        with patch("bandwidth_numbers.utils.config.Config"):
+            with patch("bandwidth_numbers.utils.rest.RestClient"):
                 cls._client = Client()
 
     @classmethod

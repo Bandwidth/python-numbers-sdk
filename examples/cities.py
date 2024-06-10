@@ -1,6 +1,6 @@
 import sys
 
-from iris_sdk import Cities, Client, RestError
+from bandwidth_numbers import Cities, Client, RestError
 
 if len(sys.argv) < 2:
     sys.exit("usage: python cities.py [state], e.g.:\n python cities.py NJ")

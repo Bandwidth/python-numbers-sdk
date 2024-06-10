@@ -8,7 +8,7 @@ import sys
 if __package__ is None:
     sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
-from iris_sdk.utils.py_compat import PY_VER_MAJOR
+from bandwidth_numbers.utils.py_compat import PY_VER_MAJOR
 
 from unittest import main, TestCase
 
@@ -17,7 +17,7 @@ if PY_VER_MAJOR == 3:
 else:
     from mock import mock_open, patch, MagicMock
 
-from iris_sdk.utils.config import *
+from bandwidth_numbers.utils.config import *
 
 class ClassConfigPropsTest(TestCase):
 
@@ -56,7 +56,7 @@ class ClassConfigInitializationTest (TestCase) :
     """Test class initialization"""
 
     def setUp(self):
-        patcher = patch("iris_sdk.utils.config.Config.load_from_file")
+        patcher = patch("bandwidth_numbers.utils.config.Config.load_from_file")
         self._patch = patcher.start()
         self.addCleanup(patch.stopall)
 
@@ -110,7 +110,7 @@ class ClassConfigLoadConfigTest (TestCase) :
 
     def test_config_load_from_good_file(self):
 
-        from iris_sdk.utils import config
+        from bandwidth_numbers.utils import config
 
         m = mock_open()
         if PY_VER_MAJOR == 3:

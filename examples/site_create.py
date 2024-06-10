@@ -1,6 +1,6 @@
 import sys
 
-from iris_sdk import Account, Client, RestError
+from bandwidth_numbers import Account, Client, RestError
 
 if len(sys.argv) < 2:
     sys.exit("usage: python site_create.py [site name], e.g.:\n" +

@@ -12,8 +12,8 @@ from unittest import main, TestCase
 import requests
 import requests_mock
 
-from iris_sdk.client import Client
-from iris_sdk.models.cities import Cities
+from bandwidth_numbers.client import Client
+from bandwidth_numbers.models.cities import Cities
 
 XML_RESPONSE_CITIES_LIST = (
     b"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"

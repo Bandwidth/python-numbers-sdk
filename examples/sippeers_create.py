@@ -1,6 +1,6 @@
 import sys
 
-from iris_sdk import Account, Client, RestError
+from bandwidth_numbers import Account, Client, RestError
 
 if len(sys.argv) < 4:
     sys.exit("usage: python sippeer_create.py [host] [peer name] [site], " +

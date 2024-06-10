@@ -124,7 +124,7 @@ account.available_npa_nxx.list({"state": "NJ"})
 ### Cities
 
 ```python
-from iris_sdk import Cities
+from bandwidth_numbers import Cities
 
 cities = Cities(client=client)
 cities.list({"state": "NC"})
@@ -133,7 +133,7 @@ cities.list({"state": "NC"})
 ### Covered rate centers
 
 ```python
-from iris_sdk import CoveredRateCenters
+from bandwidth_numbers import CoveredRateCenters
 
 rate_centers = CoveredRateCenters(client=client)
 rate_centers.list({"page": 1, "size": 10})
@@ -421,7 +421,7 @@ portin.loas.metadata.delete()
 ### Rate Centers
 
 ```python
-from iris_sdk import RateCenters
+from bandwidth_numbers import RateCenters
 rc = RateCenters(client=client)
 centers = rc.list({"state": "CA", "available": "true"})
 ```
@@ -607,7 +607,7 @@ subscription.delete()
 #### Getting a phone number
 
 ```python
-from iris_sdk import Tns
+from bandwidth_numbers import Tns
 
 tns = Tns(client=client)
 tn = tns.get(id)
