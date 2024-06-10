@@ -3,5 +3,5 @@ chardet==3.0.4
 future==0.18.3
 idna==2.8
 requests==2.22.0
-urllib3==1.25.11
+urllib3==1.26.18
 six==1.13.0
