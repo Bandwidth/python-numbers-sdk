@@ -3,8 +3,12 @@
 from bandwidth_numbers.models.base_resource import BaseData
 from bandwidth_numbers.models.data.features import Features
 from bandwidth_numbers.models.maps.tndetails import TndetailsMap
+from bandwidth_numbers.models.maps.site import SiteMap
+from bandwidth_numbers.models.maps.sip_peer import SipPeerMap
+from bandwidth_numbers.models.maps.messaging_settings import MessagingSettingsMap
 
-class TndetailsData(TndetailsMap, BaseData):
+
+class TndetailsData(TndetailsMap, SiteMap, SipPeerMap, MessagingSettingsMap, BaseData):
 
     @property
     def id(self):
