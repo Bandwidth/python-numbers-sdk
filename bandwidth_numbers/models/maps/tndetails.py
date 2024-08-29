@@ -16,3 +16,16 @@ class TndetailsMap(BaseMap):
     tier = None
     vendor_id = None
     vendor_name = None
+    site_id = None       
+    site_name = None      
+    sip_peer_id = None    
+    sip_peer_name = None  
+    is_default_peer = None 
+    service_types = []     
+    sms_enabled = None     
+    campaign_id = None     
+    message_class = None   
+    campaign_fully_provisioned = None 
+    a2p_state = None 
+    assigned_nn_route_id = None
+    assigned_nn_route_name = None
