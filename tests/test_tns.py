@@ -309,7 +309,13 @@ class ClassTnsTest(TestCase):
             self.assertEqual(tnd.account_id, "14")
             self.assertEqual(tnd.last_modified, "2014-07-30T11:29:37.000Z")
             self.assertEqual(tnd.features.lidb.status, "Pending")
-            self.assertEqual(tnd.sip_peer.peer_id, "971438")
+            self.assertEqual(tnd.messaging_settings.sms_enabled, 'true')
+            self.assertEqual(tnd.messaging_settings.campaign_id, 'CU9B04M')
+            self.assertEqual(tnd.messaging_settings.message_class, 'Campaign-E')
+            self.assertEqual(tnd.site.id, '135927')
+            self.assertEqual(tnd.site.name, 'PROD')
+            self.assertEqual(tnd.sip_peer.peer_id, '971438')
+            self.assertEqual(tnd.sip_peer.peer_name, 'Uptravi')
 
     def test_tnreservation(self):
 

@@ -2,6 +2,7 @@
 
 from bandwidth_numbers.models.maps.base_map import BaseMap
 
+
 class TndetailsMap(BaseMap):
 
     account_id = None
