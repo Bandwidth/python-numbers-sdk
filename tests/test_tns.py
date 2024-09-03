@@ -104,6 +104,10 @@ XML_RESPONSE_TNDETAILS_GET = (
     b"<VendorId>49</VendorId><VendorName>Bandwidth CLEC</VendorName>"
     b"<RateCenter>JERSEYCITY</RateCenter><Status>Inservice</Status>"
     b"<AccountId>14</AccountId>"
+    b"<Site><Id>135927</Id><Name>PROD</Name></Site>"
+    b"<ServiceTypes><ServiceType>Voice</ServiceType><ServiceType>Messaging</ServiceType></ServiceTypes>"
+    b"<MessagingSettings><SmsEnabled>true</SmsEnabled><CampaignId>CU9B04M</CampaignId><MessageClass>Campaign-E</MessageClass><CampaignFullyProvisioned>true</CampaignFullyProvisioned><A2pState>overridden</A2pState><AssignedNnRoute><Nnid>103775</Nnid><Name>BW A2P - SVR - E151 (103775)</Name></AssignedNnRoute></MessagingSettings>"
+    b"<SipPeer><PeerId>971438</PeerId><PeerName>Uptravi</PeerName><IsDefaultPeer>false</IsDefaultPeer></SipPeer>"
     b"<LastModified>2014-07-30T11:29:37.000Z</LastModified><Features>"
     b"<E911><Status>Success</Status></E911><Lidb>"
     b"<Status>Pending</Status>"
@@ -305,6 +309,13 @@ class ClassTnsTest(TestCase):
             self.assertEqual(tnd.account_id, "14")
             self.assertEqual(tnd.last_modified, "2014-07-30T11:29:37.000Z")
             self.assertEqual(tnd.features.lidb.status, "Pending")
+            self.assertEqual(tnd.messaging_settings.sms_enabled, 'true')
+            self.assertEqual(tnd.messaging_settings.campaign_id, 'CU9B04M')
+            self.assertEqual(tnd.messaging_settings.message_class, 'Campaign-E')
+            self.assertEqual(tnd.site.id, '135927')
+            self.assertEqual(tnd.site.name, 'PROD')
+            self.assertEqual(tnd.sip_peer.peer_id, '971438')
+            self.assertEqual(tnd.sip_peer.peer_name, 'Uptravi')
 
     def test_tnreservation(self):
 

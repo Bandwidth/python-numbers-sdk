@@ -2,6 +2,7 @@
 
 from bandwidth_numbers.models.maps.base_map import BaseMap
 
+
 class TndetailsMap(BaseMap):
 
     account_id = None
@@ -16,3 +17,7 @@ class TndetailsMap(BaseMap):
     tier = None
     vendor_id = None
     vendor_name = None
+    site = None
+    sip_peer = None
+    service_types = None
+    messaging_settings = None
