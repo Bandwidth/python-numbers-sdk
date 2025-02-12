@@ -25,8 +25,8 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                os: [windows-2022, windows-2019, ubuntu-20.04, ubuntu-latest]
-                python-version: [3.8, 3.9, "3.10", "3.11", "3.12"]
+                os: [ windows-2019, windows-2022, ubuntu-22.04, ubuntu-24.04, ubuntu-latest ]
+                python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
             fail-fast: false
         env:
             PYTHON_VERSION: ${{ matrix.python-version }}
@@ -65,7 +65,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Notify Slack of Failures
-              uses: Bandwidth/build-notify-slack-action@v2.0.0
+              uses: Bandwidth/build-notify-slack-action@v2
               with:
                   job-status: failure
                   slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
