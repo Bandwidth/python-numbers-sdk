@@ -48,7 +48,7 @@ jobs:
           PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
           PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
           
-      - uses: Bandwidth/build-notify-slack-action@v2.0.0
+      - uses: Bandwidth/build-notify-slack-action@v2
         if: always()
         with:
           job-status: ${{ job.status }}
