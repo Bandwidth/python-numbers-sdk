@@ -121,11 +121,20 @@ class ClassConfigLoadConfigTest (TestCase) :
         self._isfile.return_value = True
         self._getsize.return_value = 0
 
-        self._config_get.side_effect = lambda str1, str2: {
-            (SECTION_ACCOUNT, VALUE_ACCOUNT_ID): " foo ",
-            (SECTION_ACCOUNT, VALUE_USERNAME): " bar ",
-            (SECTION_ACCOUNT, VALUE_PASSWORD): " baz ",
-            (SECTION_SRV, VALUE_URL): " qux "} [str1, str2]
+        def _mock_get(section, option, *args, **kwargs):
+            mapping = {
+                (SECTION_ACCOUNT, VALUE_ACCOUNT_ID): " foo ",
+                (SECTION_ACCOUNT, VALUE_USERNAME): " bar ",
+                (SECTION_ACCOUNT, VALUE_PASSWORD): " baz ",
+                (SECTION_SRV, VALUE_URL): " qux "
+            }
+            if (section, option) in mapping:
+                return mapping[(section, option)]
+            if 'fallback' in kwargs:
+                return kwargs['fallback']
+            raise KeyError((section, option))
+
+        self._config_get.side_effect = _mock_get
 
         with patch.object(config, "open", m, create=True):
             self._config = Config(filename="whatever")

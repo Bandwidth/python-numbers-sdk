@@ -48,8 +48,8 @@ class ClassClientConfigTest(TestCase):
     @patch("bandwidth_numbers.utils.rest.RestClient.__init__", return_value = None)
     @patch("bandwidth_numbers.utils.config.Config.__init__", return_value = None)
     def test_client_init(self, mock1, mock2):
-        self._client = Client("foo", "bar", "baz", "qux", "quux")
-        mock1.assert_called_once_with("foo", "bar", "baz", "qux", "quux")
+        self._client = Client("foo", "bar", "baz", "qux", "quux", "oof", "rab", "zab", 1337)
+        mock1.assert_called_once_with("foo", "bar", "baz", "qux", "quux", "oof", "rab", "zab", 1337)
         mock2.assert_any_call()
 
 class ClassClientStrings(TestCase):
