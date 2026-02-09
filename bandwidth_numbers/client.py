@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import time
+import requests
 from bandwidth_numbers.utils.config import Config
 from bandwidth_numbers.utils.rest import RestClient
 from bandwidth_numbers.utils.bearer_auth import BearerAuth
@@ -39,10 +40,24 @@ class Client(object):
 
         return res
     
+    def _refresh_oauth_token(self):
+        token_url = 'https://api.bandwidth.com/api/v1/oauth2/token'
+        auth = (self.config.client_id, self.config.client_secret)
+        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+        data = {'grant_type': 'client_credentials'}
+        response = requests.request('POST', token_url, auth=auth, headers=headers, data=data)
+        response.raise_for_status()
+        token_data = response.json()
+        self.config.access_token = token_data['access_token']
+        self.config.access_token_expiration = int(time.time()) + token_data.get('expires_in', 3600)
+        return BearerAuth(self.config.access_token)
+    
     def _configure_auth(self):
         now = int(time.time())
         if self.config.access_token and self.config.access_token_expiration > now + 60:
             return BearerAuth(self.config.access_token)
+        elif self.config.client_id and self.config.client_secret:
+            return self._refresh_oauth_token()
         else:
             return (self.config.username, self.config.password)
 
