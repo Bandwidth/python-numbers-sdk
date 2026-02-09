@@ -40,7 +40,7 @@ class ClassOAuthTest(TestCase):
         access_token_expiration = int(time.time()) + 3600
         cls._basic_auth_client = Client(url, account_id, username, password)
         cls._basic_auth_account = Account(client=cls._basic_auth_client)
-        cls._valid_token_client = Client(url, account_id, username, password, None, None, None, access_token, access_token_expiration)
+        cls._valid_token_client = Client(url, account_id, None, None, None, None, None, access_token, access_token_expiration)
         cls._valid_token_account = Account(client=cls._valid_token_client)
         cls._client_credentials_client = Client(url, account_id, username, password, None, client_id, client_secret)
         cls._client_credentials_account = Account(client=cls._client_credentials_client)
