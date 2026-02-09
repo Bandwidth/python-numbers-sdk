@@ -33,8 +33,17 @@ pytest
 ```python
 from bandwidth_numbers import Account, Client
 
+# Bearer Auth Client with Token
+client = Client(url="https://dashboard.bandwidth.com/api", account_id=123456,
+                None, None, None, None, None, "access_token", access_token_expiration=123)
+
+# Bearer Auth Client with Client Credentials
+client = Client(url="https://dashboard.bandwidth.com/api", account_id=123456,
+                None, None None, "client_id", "client_secret")
+
+# Basic Auth Client
 client = Client(url="https://dashboard.bandwidth.com/api", account_id=123456, username="foo",
-    password="bar")
+                password="bar")
 ```
 or
 ```python
