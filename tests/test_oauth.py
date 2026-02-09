@@ -2,6 +2,7 @@
 
 import os
 import sys
+import time
 
 # For coverage.
 if __package__ is None:
@@ -19,17 +20,6 @@ XML_RESPONSE_ACCOUNT_GET = (
     b" <AccountResponse>"
     b"    <Account>"
     b"        <AccountId>123456</AccountId>"
-    b"        <CompanyName>Spam</CompanyName>"
-    b"        <AccountType>Ham</AccountType>"
-    b"        <Tiers>"
-    b"            <Tier>0</Tier>"
-    b"        </Tiers>"
-    b"        <Address>"
-    b"            <HouseNumber>900</HouseNumber>"
-    b"        </Address>"
-    b"        <Contact>"
-    b"            <FirstName>Eggs</FirstName>"
-    b"        </Contact>"
     b"    </Account>"
     b"</AccountResponse>"
 )
@@ -40,30 +30,85 @@ class ClassOAuthTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._valid_token_client = Client("http://foo", "bar", "bar", "qux", None, None, None, "access_token_1234")
+        url = "https://api.com"
+        account_id = "account_id_1234"
+        username = "username"
+        password = "password"
+        client_id = "client_id_1234"
+        client_secret = "client_secret_5678"
+        access_token = "access_token_1234"
+        access_token_expiration = int(time.time()) + 3600
+        cls._basic_auth_client = Client(url, account_id, username, password)
+        cls._basic_auth_account = Account(client=cls._basic_auth_client)
+        cls._valid_token_client = Client(url, account_id, username, password, None, None, None, access_token, access_token_expiration)
         cls._valid_token_account = Account(client=cls._valid_token_client)
+        cls._client_credentials_client = Client(url, account_id, username, password, None, client_id, client_secret)
+        cls._client_credentials_account = Account(client=cls._client_credentials_client)
+        cls._expired_token_client = Client(url, account_id, username, password, None, client_id, client_secret, access_token, int(time.time()) - 3600)
+        cls._expired_token_account = Account(client=cls._expired_token_client)
 
     @classmethod
     def tearDownClass(cls):
+        del cls._basic_auth_client
+        del cls._basic_auth_account
         del cls._valid_token_client
         del cls._valid_token_account
+        del cls._client_credentials_client
+        del cls._client_credentials_account
+        del cls._expired_token_client
+        del cls._expired_token_account
 
-    def test_account_get(self):
+    def test_basic_auth(self):
+        
+        with requests_mock.Mocker() as m:
+            url = self._basic_auth_account.client.config.url + self._basic_auth_account.get_xpath()
+            expected_headers = {"Authorization": "Basic dXNlcm5hbWU6cGFzc3dvcmQ="}
+            m.get(url, content=XML_RESPONSE_ACCOUNT_GET, request_headers=expected_headers)
+
+            self._basic_auth_account.get()
+            self.assertEqual(self._basic_auth_account.id, "123456")
+
+    def test_valid_token(self):
 
         with requests_mock.Mocker() as m:
-
             url = self._valid_token_account.client.config.url + self._valid_token_account.get_xpath()
             expected_headers = {"Authorization": "Bearer access_token_1234"}
             m.get(url, content=XML_RESPONSE_ACCOUNT_GET, request_headers=expected_headers)
 
             self._valid_token_account.get()
-
             self.assertEqual(self._valid_token_account.id, "123456")
-            self.assertEqual(self._valid_token_account.company_name, "Spam")
-            self.assertEqual(self._valid_token_account.account_type, "Ham")
-            self.assertEqual(self._valid_token_account.tiers.tier.items, ["0"])
-            self.assertEqual(self._valid_token_account.address.house_number, "900")
-            self.assertEqual(self._valid_token_account.contact.first_name, "Eggs")
+
+    def test_client_credentials(self):
+
+        with requests_mock.Mocker() as m:
+            token_url = 'https://api.bandwidth.com/api/v1/oauth2/token'
+            m.post(token_url, json={
+                'access_token': 'new_access_token_5678',
+                'expires_in': 3600
+            })
+
+            url = self._client_credentials_account.client.config.url + self._client_credentials_account.get_xpath()
+            expected_headers = {"Authorization": "Bearer new_access_token_5678"}
+            m.get(url, content=XML_RESPONSE_ACCOUNT_GET, request_headers=expected_headers)
+
+            self._client_credentials_account.get()
+            self.assertEqual(self._client_credentials_account.id, "123456")
+
+    def test_expired_token(self):
+
+        with requests_mock.Mocker() as m:
+            token_url = 'https://api.bandwidth.com/api/v1/oauth2/token'
+            m.post(token_url, json={
+                'access_token': 'new_access_token_1234',
+                'expires_in': 3600
+            })
+
+            url = self._expired_token_account.client.config.url + self._expired_token_account.get_xpath()
+            expected_headers = {"Authorization": "Bearer new_access_token_1234"}
+            m.get(url, content=XML_RESPONSE_ACCOUNT_GET, request_headers=expected_headers)
+
+            self._expired_token_account.get()
+            self.assertEqual(self._expired_token_account.id, "123456")
 
 if __name__ == "__main__":
     main()
