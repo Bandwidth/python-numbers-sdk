@@ -12,11 +12,12 @@ from bandwidth_numbers.utils.py_compat import PY_VER_MAJOR
 from unittest import main, TestCase
 
 if PY_VER_MAJOR == 3:
-    from unittest.mock import patch, MagicMock, PropertyMock
+    from unittest.mock import patch, MagicMock, PropertyMock, ANY
 else:
-    from mock import patch, MagicMock, PropertyMock
+    from mock import patch, MagicMock, PropertyMock, ANY
 
 from bandwidth_numbers.client import Client
+from bandwidth_numbers.utils.bearer_auth import BearerAuth
 
 class ClassClientInitTest(TestCase):
 
@@ -48,8 +49,8 @@ class ClassClientConfigTest(TestCase):
     @patch("bandwidth_numbers.utils.rest.RestClient.__init__", return_value = None)
     @patch("bandwidth_numbers.utils.config.Config.__init__", return_value = None)
     def test_client_init(self, mock1, mock2):
-        self._client = Client("foo", "bar", "baz", "qux", "quux")
-        mock1.assert_called_once_with("foo", "bar", "baz", "qux", "quux")
+        self._client = Client("foo", "bar", "baz", "qux", "quux", "oof", "rab", "zab", 1337)
+        mock1.assert_called_once_with("foo", "bar", "baz", "qux", "quux", "oof", "rab", "zab", 1337)
         mock2.assert_any_call()
 
 class ClassClientStrings(TestCase):
@@ -87,11 +88,23 @@ class ClassClientRequests(TestCase):
             new_callable = PropertyMock, return_value = "bar")
         patcher_user = patch("bandwidth_numbers.utils.config.Config.username",
             new_callable = PropertyMock, return_value = "baz")
+        patcher_token = patch("bandwidth_numbers.utils.config.Config.access_token",
+            new_callable = PropertyMock, return_value = None)
+        patcher_exp = patch("bandwidth_numbers.utils.config.Config.access_token_expiration",
+            new_callable = PropertyMock, return_value = 0)
+        patcher_client_id = patch("bandwidth_numbers.utils.config.Config.client_id",
+            new_callable = PropertyMock, return_value = None)
+        patcher_client_secret = patch("bandwidth_numbers.utils.config.Config.client_secret",
+            new_callable = PropertyMock, return_value = None)
 
         self._url = patcher_url.start()
         self._pass = patcher_pass.start()
         self._request = patcher_req.start()
         self._user = patcher_user.start()
+        self._token = patcher_token.start()
+        self._exp = patcher_exp.start()
+        self._client_id = patcher_client_id.start()
+        self._client_secret = patcher_client_secret.start()
 
         self._request.return_value = self._mock_res
 
@@ -141,6 +154,53 @@ class ClassClientRequests(TestCase):
             url=self._url.return_value, 
             auth=(self._user.return_value, self._pass.return_value),
             params="qux", data="quux", headers=None)
+
+    def test_oauth_valid_bearer_token(self):
+        with patch("time.time", return_value=1000):
+            self._token.return_value = "access_token_1234"
+            self._exp.return_value = 1000 + 3600
+            self._client.delete("qux")
+            self._request.assert_called_once_with(
+                "DELETE",
+                url="foo/qux",
+                auth=ANY,
+                params=None, data=None, headers=None)
+            called_args, called_kwargs = self._request.call_args
+            auth = called_kwargs["auth"]
+            self.assertIsInstance(auth, BearerAuth)
+            self.assertEqual(auth.token, "access_token_1234")
+
+    def test_oauth_expired_token_no_client_credentials_uses_basic_auth(self):
+        with patch("time.time", return_value=1000):
+            self._token.return_value = "expired_token"
+            self._exp.return_value = 500
+            self._client.delete("qux")
+            self._request.assert_called_once_with(
+                "DELETE",
+                url="foo/qux",
+                auth=(self._user.return_value, self._pass.return_value),
+                params=None, data=None, headers=None)
+
+    def test_oauth_client_credentials_flow(self):
+        with patch("time.time", return_value=1000):
+            self._token.return_value = None
+            self._exp.return_value = 0
+            self._client_id.return_value = "client_id_abc"
+            self._client_secret.return_value = "client_secret_xyz"
+            with patch("bandwidth_numbers.client.Client._refresh_oauth_token",
+                       return_value=BearerAuth("refreshed_token")) as refresh_mock:
+                self._client.delete("qux")
+                self._request.assert_called_once_with(
+                    "DELETE",
+                    url="foo/qux",
+                    auth=ANY,
+                    params=None, data=None, headers=None)
+
+                called_args, called_kwargs = self._request.call_args
+                auth = called_kwargs["auth"]
+                self.assertIsInstance(auth, BearerAuth)
+                self.assertEqual(auth.token, "refreshed_token")
+                refresh_mock.assert_called_once()
 
 if __name__ == "__main__":
     main()
