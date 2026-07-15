@@ -6,6 +6,7 @@ metadata:
   description: Python Numbers SDK
   annotations:
     github.com/project-slug: Bandwidth/python-numbers-sdk
+    bandwidth.com/languages: Python
   organization: BW
   costCenter: Development - Software Infra
   platformType: 
